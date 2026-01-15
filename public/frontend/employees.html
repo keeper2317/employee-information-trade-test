@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="">
+    <title>Employees</title>
+
+    <!-- IMPORTS -->
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+    
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <!-- Toast CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+    <style>
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .status-badge {
+            font-size: 0.85em;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        .status-active { background-color: #d1e7dd; color: #0f5132; }
+        .status-resigned { background-color: #fff3cd; color: #664d03; }
+        .status-terminated { background-color: #f8d7da; color: #842029; }
+    </style>
+</head>
+<body class="container py-4">
+
+    <!-- Toast Container -->
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+    <!-- Reusable modal for create or edit -->
+    <h3 class="mb-3">Employees Table</h3>
+    <button class="btn btn-primary mb-3" onclick="openCreateEmployeeModal()">
+        Add Employee
+    </button>
+
+    <!-- Search and filter -->
+    <div class="table-responsive">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search employee...">
+            </div>
+
+            <div class="col-md-4">
+                <select id="statusFilter" class="form-select">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="resigned">Resigned</option>
+                    <option value="terminated">Terminated</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <select id="departmentFilter" class="form-select">
+                    <option value="">All Departments</option>
+                </select>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover" id="employeeTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- First thing to see before the loading of ajax -->
+                <tr>
+                    <td colspan="6" class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ID for calling the modal if clicked -->
+    <div id="employeeModalContainer"></div>
+    <div id="viewModalContainer"></div>
+
+    <!-- IMPORTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- File path needed for the modals and table -->
+    <script src="js/employee-modal.js"></script>
+    <script src="js/view-modal.js"></script>
+    <script src="js/employees.js"></script>
+
+    <script>
+        // Load modals
+        Promise.all([
+            fetch('components/employee-modal.html').then(res => res.text()),
+            fetch('components/view-modal.html').then(res => res.text())
+        ]).then(([employeeModalHtml, viewModalHtml]) => {
+            document.getElementById('employeeModalContainer').innerHTML = employeeModalHtml;
+            document.getElementById('viewModalContainer').innerHTML = viewModalHtml;
+            
+            // Initialize modals
+            window.employeeModal = new bootstrap.Modal(document.getElementById('employeeModal'));
+            window.viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
+            
+            // Load employees after modals are ready
+            loadEmployees();
+        });
+    </script>
+</body>
+</html>

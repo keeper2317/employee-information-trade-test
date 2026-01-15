@@ -1,0 +1,95 @@
+<div class="modal fade" id="employeeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="employeeModalTitle">Add Employee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="employeeForm">
+          <input type="hidden" id="employee_p_id">
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">First Name *</label>
+              <input type="text" id="first_name" class="form-control" placeholder="e.g. Juan" required>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Middle Name</label>
+              <input type="text" id="middle_name" placeholder="e.g. Miguel" class="form-control">
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Last Name *</label>
+              <input type="text" id="last_name" class="form-control" placeholder="e.g. Dela Cruz" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Email *</label>
+              <input type="email" id="email" class="form-control" placeholder="e.g. @gmail.com" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Phone</label>
+              <input type="text" id="phone" class="form-control" placeholder="09XXXXXXXXX">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Date Hired *</label>
+              <input type="date" id="date_hired" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Department</label>
+              <select id="department" class="form-select">
+                  <option value="">Select Department</option>
+                  <option value="IT Department">IT Department</option>
+                  <option value="HR">Human Resources</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Operations">Operations</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Sales">Sales</option>
+                  <option value="Admin">Administration</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Position</label>
+              <input type="text" id="position" placeholder="e.g. Quality Assurance" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Monthly Salary</label>
+              <input type="number" id="salary" class="form-control" step="0.01" placeholder="e.g. 15,000.00" min="15000">
+            </div>
+
+            <!-- Status Field - Hidden by default, shown only in edit mode -->
+            <div class="col-md-6 d-none" id="statusField">
+              <label class="form-label">Status</label>
+              <select id="status" class="form-select">
+                <option value="active">Active</option>
+                <option value="resigned">Resigned</option>
+                <option value="terminated">Terminated</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Validation Errors -->
+          <div id="formErrors" class="mt-3"></div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveEmployeeBtn" onclick="submitEmployeeForm()">
+          Save Employee
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
