@@ -44,6 +44,11 @@ function openEditEmployeeModal(employee) {
 
 /* SUBMIT EMPLOYEE FORM */
 function submitEmployeeForm() {
+    const btn = document.getElementById('saveEmployeeBtn');
+
+    // Prevent double click
+    if (btn.disabled) return;
+
     const salary = parseFloat(document.getElementById('salary').value);
 
     // Validation
@@ -56,6 +61,10 @@ function submitEmployeeForm() {
         showToast('Please select a department', 'error');
         return;
     }
+
+    // 🔒 Set loading state
+    btn.disabled = true;
+    btn.innerHTML = 'Saving...';
 
     // form
     const formData = {
@@ -105,6 +114,11 @@ function submitEmployeeForm() {
             console.error('Error:', error);
             showToast('Failed to save employee', 'error');
         }
+    })
+    .finally(() => {
+        // 🔓 Restore button state
+        btn.disabled = false;
+        btn.innerHTML = 'Save Employee';
     });
 }
 
